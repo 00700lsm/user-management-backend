@@ -1,0 +1,17 @@
+name: Backend contract baseline check
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  contract-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Download pinned OpenAPI
+        run: bash scripts/sync-contract.sh
+      - name: Validate pinned OpenAPI
+        run: npx --yes @apidevtools/swagger-cli@4.0.4 validate .contract-cache/openapi.yaml
