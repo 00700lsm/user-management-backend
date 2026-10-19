@@ -1,3 +1,24 @@
-# user-management-backend
+# User Management Backend (PoC)
 
-초기 PoC 저장소입니다. 자세한 기준 및 구조를 곧 반영합니다.
+사용자 관리의 Auth / User / Permission 세 도메인 담당자가 **자기 영역의 Backend와 Frontend를 함께 개발**하는 PoC용 Backend 저장소입니다.
+
+- 공통 계약: https://github.com/00700lsm/user-management-contract/blob/main/openapi.yaml
+- AA 설계 기준: https://github.com/00700lsm/user-management-contract/tree/main/docs
+- Frontend: https://github.com/00700lsm/user-management-frontend
+
+## 담당
+| 개발자 | Backend | 연결되는 같은 담당자 Frontend |
+|---|---|---|
+| A | Auth | 로그인/비밀번호 |
+| B | User | 가입/프로필/사용자 관리 |
+| C | Permission | Role/권한 화면 |
+
+## 모듈 경계
+- `auth/`: 로그인, 인증, 비밀번호/토큰 관련 로직
+- `user/`: 회원가입, 프로필, 사용자 관리, 상태
+- `permission/`: Role/사용자 권한
+- 타 모듈 데이터 직접 수정 금지. 실제 물리 서비스 분할은 추후 결정.
+
+**계약 우선:** 구현 시작 시 Contract Git SHA를 기록합니다. API 스키마/엔드포인트/상태코드를 변경하려면 Contract 저장소 PR을 먼저 반영합니다.
+
+이 저장소는 **초기 구조/문서만 제공**합니다. 기술 스택 및 실행 가능한 서버는 아직 결정/구현되지 않았습니다.
