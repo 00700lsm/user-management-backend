@@ -30,3 +30,7 @@
 ## Backend Agent Skill
 
 [단계별 Backend 개발 스킬](.agents/skills/backend-workflow/SKILL.md)과 [Claude Code Adapter](.claude/skills/backend-workflow/SKILL.md)를 참고하세요. 공통 스킬 작성 규칙은 [Contract 가이드](https://github.com/00700lsm/user-management-contract/blob/dev/docs/governance/agent-skills-guide.md)가 정본입니다. Sibling Contract는 `../user-management-contract`, API 버전은 `contract.sha`로 고정합니다.
+
+## 추천 Backend 기술 스택 (AA 승인 전)
+
+[Backend 기술 스택·H2 로컬 DB 가이드](docs/aa/tech-stack.md)에서 Java 21 / Spring Boot 4.1.x / JPA(Hibernate) / **H2 Embedded File** / Flyway / Gradle을 권장합니다. 현재 실제 빌드·DB 구현은 아직 하지 않았습니다. AA 결정 DEC-003/011을 확인하세요.

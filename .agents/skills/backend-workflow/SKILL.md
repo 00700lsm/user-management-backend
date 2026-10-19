@@ -13,6 +13,11 @@ Use on an explicit Backend setup, development or test task. Do not claim runnabl
 3. Read own `docs/aa/README.md`, `docs/aa/service-boundaries.md`, `docs/aa/data-handoff.md`, `CONTRIBUTING.md`, `contract.sha`. Compare Frontend's contract.sha and identify the approved baseline.
 4. For external API shape use **openapi.yaml at contract.sha**, not latest dev head. `bash scripts/sync-contract.sh` downloads the pinned file.
 
+## Recommended stack proposal — check before setup
+- **Read own `docs/aa/tech-stack.md` and sibling Contract `docs/aa/tech-stack-proposal.md`** before project setup or infrastructure-related implementation.
+- Recommended (not yet approved): Java 21 + Spring Boot 4.1.x + Spring Web MVC/Security + Spring Data JPA (Hibernate ORM) + H2 file local / in-memory tests + Flyway + Gradle + JUnit/MockMvc; modular single application.
+- Use local isolated H2 database files rather than trying to share one DB file across developer machines. Version schema with Flyway, not committed DB binaries. Check DEC-003/011 for approval.
+
 ## 1. Project initialization — only when approved
 - Inspect existing `auth/`, `user/`, `permission/` folders; they are logical boundary placeholders, not runnable modules.
 - Before selecting a build system, framework, DBMS or physical service split, check Contract `docs/aa/decisions.md` and ask AA/PL for unresolved decisions.
