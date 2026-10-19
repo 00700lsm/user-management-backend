@@ -26,3 +26,7 @@
 ## AA 설계 인계
 
 [Backend AA 인계서](docs/aa/README.md)에 서비스 책임·DB 소유권·개발 착수/검증 체크리스트가 있습니다. 공통 정본(OpenAPI/요구사항/ERD)은 Contract 저장소를 참조합니다.
+
+## Backend Agent Skill
+
+[단계별 Backend 개발 스킬](.agents/skills/backend-workflow/SKILL.md)과 [Claude Code Adapter](.claude/skills/backend-workflow/SKILL.md)를 참고하세요. 공통 스킬 작성 규칙은 [Contract 가이드](https://github.com/00700lsm/user-management-contract/blob/dev/docs/governance/agent-skills-guide.md)가 정본입니다. Sibling Contract는 `../user-management-contract`, API 버전은 `contract.sha`로 고정합니다.
