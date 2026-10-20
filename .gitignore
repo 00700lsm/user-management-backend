@@ -1,1 +1,14 @@
 .contract-cache/
+.gradle/
+build/
+out/
+.local-data/
+gradle/wrapper/gradle-wrapper.jar
+*.mv.db
+*.trace.db
+*.log
+.env
+.env.*
+!.env.example
+.idea/
+*.iml
