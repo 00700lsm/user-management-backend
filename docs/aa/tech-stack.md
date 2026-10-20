@@ -1,6 +1,6 @@
 # Backend 기술 스택 / H2 로컬 개발 가이드 (PoC Accepted)
 
-**상태: Accepted PoC 기준 / 실행 골격 추가, 실제 빌드 미검증.** 기술 스택 공통 정본: sibling Contract `../user-management-contract/docs/aa/tech-stack-proposal.md` (Workspace 위치: `repos/user-management-contract/docs/aa/tech-stack-proposal.md`). 승인 내용은 Contract `docs/aa/decisions.md`의 DEC-003/011을 확인합니다.
+**상태: Accepted PoC 기준 / 실행 골격 추가, Gradle/H2 컨텍스트 테스트 완료.** 기술 스택 공통 정본: sibling Contract `../user-management-contract/docs/aa/tech-stack-proposal.md` (Workspace 위치: `repos/user-management-contract/docs/aa/tech-stack-proposal.md`). 승인 내용은 Contract `docs/aa/decisions.md`의 DEC-003/011을 확인합니다.
 
 ## 권장 구성
 
@@ -32,9 +32,9 @@ user-management-backend/
 └── .local-data/        # gitignore 로컬 DB 파일 (커밋 금지)
 ```
 
-기존 `auth/`, `user/`, `permission/`은 문서 placeholder이며 실제 Java 모듈 Entity 골격은 `src/main/java/dev/usermanagement/`에 생성했습니다. Gradle·H2/Flyway·Security 프로젝트 실행 골격을 추가했으며 **실제 빌드 검증은 아직 수행하지 않았습니다.**
+기존 `auth/`, `user/`, `permission/`은 문서 placeholder이며 실제 Java 모듈 Entity 골격은 `src/main/java/dev/usermanagement/`에 생성했습니다. Gradle·H2/Flyway·Security 프로젝트 실행 골격을 추가했으며 GitHub Actions에서 Gradle test/JPA Schema Validate/H2 Memory/Flyway V1 컨텍스트 테스트가 통과했습니다. 로컬 File DB bootRun 및 실제 도메인 API는 미검증입니다.
 
-## H2 DB Profile 예시 (적용된 기본 Profile (실제 실행 전 검증 필요))
+## H2 DB Profile (현재 적용 설정 예시)
 
 ```yaml
 # application-local.yml 예시 — Secret/실제 운영 환경 아님
