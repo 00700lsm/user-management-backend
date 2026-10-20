@@ -9,7 +9,7 @@ if [[ ! -f "$JAR" ]]; then
   command -v curl >/dev/null || { echo "curl is required to bootstrap Gradle wrapper" >&2; exit 1; }
   TMP="$JAR.download"
   trap 'rm -f "$TMP"' EXIT
-  curl --fail --silent --show-error --location --retry 3 "https://services.gradle.org/distributions/gradle-9.3.1-wrapper.jar" -o "$TMP"
+  curl --fail --silent --show-error --location --retry 3 "https://raw.githubusercontent.com/gradle/gradle/v9.3.1/gradle/wrapper/gradle-wrapper.jar" -o "$TMP"
   mv "$TMP" "$JAR"
 fi
 if command -v sha256sum >/dev/null 2>&1; then
