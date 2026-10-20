@@ -25,3 +25,10 @@ curl http://localhost:8080/actuator/health
 첫 `./gradlew` 실행은 Gradle 9.3.1 Wrapper JAR을 공식 배포 URL에서 다운로드해 SHA-256을 확인합니다. **Java 21을 설치해야** 하며 Gradle 배포 파일과 의존성을 다운로드할 수 있어야 합니다. `.local-data/`는 Git 무시 대상.
 
 정식 인증·가입 API는 미구현이므로 404/401을 예상해야 하며 제품 기능 검증으로 간주하지 않습니다.
+
+
+## GitHub Actions 검증 결과 (2026-10-20)
+
+- `main`과 `dev`의 **Gradle `test` 통과**: Java 21, Spring Boot 4.1.1, Flyway V1 마이그레이션, H2 in-memory, JPA schema validate, Application Context smoke.
+- [Main CI](https://github.com/00700lsm/user-management-backend/actions/runs/39347117079) / [Dev CI](https://github.com/00700lsm/user-management-backend/actions/runs/39347081748)
+- `bootRun` 로컬 기동, JWT/API Runtime Contract, 보호 API/권한 및 FE 연동은 **검증 전**.
