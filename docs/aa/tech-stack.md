@@ -1,6 +1,6 @@
-# Backend 기술 스택 / H2 로컬 개발 가이드 (AA 추천안)
+# Backend 기술 스택 / H2 로컬 개발 가이드 (PoC Accepted)
 
-**상태: Proposed, 미구현.** 기술 스택 공통 정본: sibling Contract `../user-management-contract/docs/aa/tech-stack-proposal.md` (Workspace 위치: `repos/user-management-contract/docs/aa/tech-stack-proposal.md`). 승인 여부는 Contract `docs/aa/decisions.md`의 DEC-003/011을 확인합니다.
+**상태: Accepted PoC 기준 / 실행 골격 추가, 실제 빌드 미검증.** 기술 스택 공통 정본: sibling Contract `../user-management-contract/docs/aa/tech-stack-proposal.md` (Workspace 위치: `repos/user-management-contract/docs/aa/tech-stack-proposal.md`). 승인 내용은 Contract `docs/aa/decisions.md`의 DEC-003/011을 확인합니다.
 
 ## 권장 구성
 
@@ -9,7 +9,7 @@
 - H2 Embedded: 로컬은 File Mode, Unit/Integration Test는 Memory Mode. **별도 DB 서버 설치 필요 없음.**
 - Flyway: 스키마 버전 이력. `spring.jpa.hibernate.ddl-auto=validate`와 병행 (자동 `create/update`는 마이그레이션 기준선을 해치므로 지양).
 - Gradle Wrapper + JUnit + MockMvc, 인증 통합 E2E는 FE/BE 전체 연결 시 수행
-- **한 개 Spring Boot 프로세스 내 Auth/User/Permission 모듈** (단일 Git Backend Repository, 물리 MSA 아님). AA DEC-003 확정 전 제안.
+- **한 개 Spring Boot 프로세스 내 Auth/User/Permission 모듈** (단일 Git Backend Repository, 물리 MSA 아님). AA DEC-003 승인된 기준.
 
 ## 프로젝트 구성 제안
 
@@ -32,9 +32,9 @@ user-management-backend/
 └── .local-data/        # gitignore 로컬 DB 파일 (커밋 금지)
 ```
 
-기존 `auth/`, `user/`, `permission/`은 현재 placeholder입니다. 스택 승인/초기 프로젝트 구성 시 마이그레이션 계획을 세우고 기존 파일을 무작정 삭제하지 않습니다. 초기 빌드 파일은 **아직 생성하지 않았습니다.**
+기존 `auth/`, `user/`, `permission/`은 문서 placeholder이며 실제 Java 모듈 Entity 골격은 `src/main/java/dev/usermanagement/`에 생성했습니다. Gradle·H2/Flyway·Security 프로젝트 실행 골격을 추가했으며 **실제 빌드 검증은 아직 수행하지 않았습니다.**
 
-## H2 DB Profile 예시 (승인 후 실제 적용)
+## H2 DB Profile 예시 (적용된 기본 Profile (실제 실행 전 검증 필요))
 
 ```yaml
 # application-local.yml 예시 — Secret/실제 운영 환경 아님
@@ -76,7 +76,7 @@ spring:
 
 ## 독립 개발·연결 단계
 
-1. AA: DEC-003/011과 DEC-001/002/009 승인 또는 범위 제외 합의
+1. AA: DEC-003/011과 DEC-001/002/009 승인 완료. Backend 기능 구현 시 각 결정 준수
 2. 공통 BE Skeleton + H2 File + Flyway + Test Profile + 공통 Security Principal과 Test Fixture 계약 정의
 3. A/B/C 각각 Auth/User/Permission **기능별 FE+BE 수직 개발**, Backend는 한 애플리케이션에 모듈로 합류
 4. Schema 확인→Mock/Fixture 단위 테스트→실제 Auth Token→G2~G4 통합·E2E
