@@ -18,4 +18,13 @@ jobs:
       - name: Gradle test (includes Flyway/H2 context)
         run: |
           chmod +x gradlew
-          ./gradlew --no-daemon test
+          ./gradlew --no-daemon test bootJar
+      - name: Ensure test-only Auth fixtures excluded from production archive
+        run: |
+          archive=$(find build/libs -maxdepth 1 -type f -name "*.jar" ! -name "*-plain.jar" | head -n 1)
+          test -n "$archive"
+          if jar tf "$archive" | grep -E "(TestActors|AuthBoundaryMockMvcTests|CurrentActorTests)"; then
+            echo "Test-only Auth class leaked into production bootJar"
+            exit 1
+          fi
+          echo "Test-only auth fixtures excluded from production bootJar"
