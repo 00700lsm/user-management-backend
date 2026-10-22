@@ -27,9 +27,20 @@
 
 [Backend AA 인계서](docs/aa/README.md)에 서비스 책임·DB 소유권·개발 착수/검증 체크리스트가 있습니다. 공통 정본(OpenAPI/요구사항/ERD)은 Contract 저장소를 참조합니다.
 
-## Backend Agent Skill
+## Backend AI Agent Skills
 
-[단계별 Backend 개발 스킬](.agents/skills/backend-workflow/SKILL.md)과 [Claude Code Adapter](.claude/skills/backend-workflow/SKILL.md)를 참고하세요. 공통 스킬 작성 규칙은 [Contract 가이드](https://github.com/00700lsm/user-management-contract/blob/dev/docs/governance/agent-skills-guide.md)가 정본입니다. Sibling Contract는 `../user-management-contract`, API 버전은 `contract.sha`로 고정합니다.
+공통 구현 규칙은 [AGENTS.md](AGENTS.md)에서 상시 적용하고, 아래는 **명시적인 작업을 수행하는 Skill**입니다.
+
+| Skill | 호출 목적 | 실제 수행 |
+|---|---|---|
+| [`implement-api-operation`](.agents/skills/implement-api-operation/SKILL.md) | 특정 API 구현 요청 | 승인 OpenAPI 기준 Controller/Service/테스트 구현 |
+| [`create-db-migration`](.agents/skills/create-db-migration/SKILL.md) | DB 변경 요청 | Flyway 신규 Migration/JPA 매핑/테스트 |
+| [`validate-backend-api`](.agents/skills/validate-backend-api/SKILL.md) | API 상태·계약 검사 | Gradle 테스트와 로컬 HTTP 읽기 전용 점검 |
+| [`test-auth-integration`](.agents/skills/test-auth-integration/SKILL.md) | 실제 Auth·Role 연동 검사 | 테스트 Fixture/JWT 통합 시나리오의 성공·차단 판정 |
+
+Claude Code는 `.claude/skills/`의 같은 이름 Skill을 통해 실행할 수 있습니다. Cursor/Codex 등은 `.agents/skills/`를 참조하세요. **API 구현·DB Migration은 명시적 작업 범위 내 파일 수정이 가능**하며, **검증 스킬은 기본 읽기 전용**입니다. 실제 테스트를 수행하지 않았으면 완료라고 표시하지 않습니다.
+
+로컬 익명 접근 Smoke는 `python3 scripts/probe_backend_security.py --base-url http://127.0.0.1:8080`으로 검사합니다. 이 검사는 건강 상태와 401 오류 형식만 확인하며 API 구현/JWT 연동 성공을 증명하지 않습니다.
 
 ## Backend 기술 스택 (Accepted)
 
