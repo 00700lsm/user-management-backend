@@ -1,11 +1,13 @@
 package dev.usermanagement.shared;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Map;
+import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -76,8 +78,9 @@ class AuthBoundaryMockMvcTests {
         );
         // SecurityFilterChain can authorize based on the supplied test authority,
         // but the application boundary must never trust an unknown principal type.
-        mvc.perform(get("/api/admin/_auth-fixture").with(authentication(unverified)))
-            .andExpect(status().is5xxServerError());
+        ServletException exception = assertThrows(ServletException.class, () ->
+            mvc.perform(get("/api/admin/_auth-fixture").with(authentication(unverified))));
+        org.junit.jupiter.api.Assertions.assertInstanceOf(IllegalStateException.class, exception.getCause());
     }
 
     @RestController
