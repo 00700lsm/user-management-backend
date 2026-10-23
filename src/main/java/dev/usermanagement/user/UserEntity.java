@@ -33,4 +33,5 @@ public class UserEntity {
     public String getEmail() { return email; }
     public String getName() { return name; }
     public String getStatus() { return status; }
+    public OffsetDateTime getCreatedAt() { return createdAt; }
 }
