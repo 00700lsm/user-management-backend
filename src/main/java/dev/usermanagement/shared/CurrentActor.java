@@ -17,10 +17,10 @@ public class CurrentActor {
     public VerifiedActor required() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken) {
-            throw new IllegalStateException("Authenticated actor is unavailable");
+            throw new ActorUnavailableException("Authenticated actor is unavailable");
         }
         if (!(auth.getPrincipal() instanceof VerifiedActor verified)) {
-            throw new IllegalStateException("Security principal is not a DB-verified actor");
+            throw new ActorUnavailableException("Security principal is not a DB-verified actor");
         }
         return verified;
     }
