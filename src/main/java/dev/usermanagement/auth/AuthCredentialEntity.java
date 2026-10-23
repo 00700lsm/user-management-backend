@@ -15,4 +15,17 @@ public class AuthCredentialEntity {
     private OffsetDateTime passwordUpdatedAt;
 
     protected AuthCredentialEntity() {}
+
+    AuthCredentialEntity(Long userId, String passwordHash) {
+        this.userId = userId;
+        changePassword(passwordHash);
+    }
+
+    String getPasswordHash() { return passwordHash; }
+    OffsetDateTime getPasswordUpdatedAt() { return passwordUpdatedAt; }
+
+    void changePassword(String newHash) {
+        this.passwordHash = newHash;
+        this.passwordUpdatedAt = OffsetDateTime.now();
+    }
 }

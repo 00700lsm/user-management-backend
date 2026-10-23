@@ -52,6 +52,7 @@ Claude Code는 `.claude/skills/`의 같은 이름 Skill을 통해 실행할 수 
 cd user-management-backend
 mkdir -p .local-data
 ./gradlew test
+export JWT_SECRET="<32바이트 이상 임의 문자열>"  # 필수, 커밋 금지
 ./gradlew bootRun
 # 별도 터미널에서 curl http://localhost:8080/actuator/health
 ```
@@ -65,6 +66,7 @@ mkdir -p .local-data
 ```bash
 mkdir -p .local-data
 ./gradlew test
+export JWT_SECRET="<32바이트 이상 임의 문자열>"  # 필수, 커밋 금지
 ./gradlew bootRun
 ```
 
