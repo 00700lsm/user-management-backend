@@ -12,4 +12,11 @@ public class UserRoleEntity {
     private String roleCode;
 
     protected UserRoleEntity() {}
+
+    UserRoleEntity(long userId, String roleCode) {
+        this.userId = userId;
+        this.roleCode = roleCode;
+    }
+
+    String getRoleCode() { return roleCode; }
 }
