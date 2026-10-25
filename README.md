@@ -33,6 +33,7 @@
 
 | Skill | 호출 목적 | 실제 수행 |
 |---|---|---|
+| [`prepare-contract-pr`](.agents/skills/prepare-contract-pr/SKILL.md) | 기능 PR을 보내기 직전 | 최신 Contract/dev 비교·영향 검토·안전한 pin 갱신·Gradle 테스트 결과 보고 |
 | [`implement-api-operation`](.agents/skills/implement-api-operation/SKILL.md) | 특정 API 구현 요청 | 승인 OpenAPI 기준 Controller/Service/테스트 구현 |
 | [`create-db-migration`](.agents/skills/create-db-migration/SKILL.md) | DB 변경 요청 | Flyway 신규 Migration/JPA 매핑/테스트 |
 | [`validate-backend-api`](.agents/skills/validate-backend-api/SKILL.md) | API 상태·계약 검사 | Gradle 테스트와 로컬 HTTP 읽기 전용 점검 |
