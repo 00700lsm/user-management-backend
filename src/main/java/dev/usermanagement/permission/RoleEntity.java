@@ -11,4 +11,7 @@ public class RoleEntity {
     private String name;
 
     protected RoleEntity() {}
+
+    String getCode() { return code; }
+    String getName() { return name; }
 }
