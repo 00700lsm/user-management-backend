@@ -12,6 +12,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Report latest Contract dev drift (advisory)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          pinned="$(tr -d '\r\n' < contract.sha)"
+          latest="$(git ls-remote https://github.com/00700lsm/user-management-contract.git refs/heads/dev 2>/dev/null | awk '{print $1}')" || latest=""
+          if [[ ! "$latest" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::warning::Unable to resolve Contract/dev; compatibility review not performed."
+            echo "Contract/dev lookup: NOT_RUN; manual AA review required." >> "$GITHUB_STEP_SUMMARY"
+          elif [[ "$pinned" != "$latest" ]]; then
+            echo "::warning::Pinned Contract $pinned differs from current Contract/dev $latest. AA impact review required; this warning is not a compatibility verdict."
+            echo "Contract drift: pinned $pinned vs Contract/dev $latest. AA must assess affected operations before merge." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Contract drift: pinned Contract matches Contract/dev at $latest." >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Download pinned OpenAPI
         run: bash scripts/sync-contract.sh
       - name: Validate pinned OpenAPI
