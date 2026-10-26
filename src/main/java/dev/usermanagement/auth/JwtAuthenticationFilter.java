@@ -59,9 +59,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (t.getId() == null || revoked.isRevoked(t.getId())) return Optional.empty();
             if (!users.findStatus(userId).filter("ACTIVE"::equals).isPresent()) return Optional.empty();
             var cred = credentials.findById(userId);
-            // tokens issued before the last password change (second precision) are dead
-            if (cred.isEmpty()
-                    || t.getIssuedAt().getEpochSecond() < cred.get().getPasswordUpdatedAt().toEpochSecond()) {
+            // pwv must equal the credential version (password_updated_at millis) stored now
+            if (cred.isEmpty() || !(t.getClaims().get("pwv") instanceof Number pwv)
+                    || pwv.longValue() != cred.get().getPasswordUpdatedAtMillis()) {
                 return Optional.empty();
             }
             Set<String> current = roles.currentRoles(userId);

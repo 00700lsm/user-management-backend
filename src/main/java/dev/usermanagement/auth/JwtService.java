@@ -35,10 +35,11 @@ public class JwtService {
             new JwtTimestampValidator(Duration.ZERO), new JwtIssuerValidator(ISSUER)));
     }
 
-    String issue(long userId, Set<String> roles) {
+    /** pwv = auth_credential.password_updated_at epoch millis; changes on every password change. */
+    String issue(long userId, Set<String> roles, long pwv) {
         Instant now = Instant.now();
         return sign(JwtClaimsSet.builder().issuer(ISSUER).subject(String.valueOf(userId))
-            .claim("roles", roles.stream().sorted().toList()).id(UUID.randomUUID().toString())
+            .claim("roles", roles.stream().sorted().toList()) .claim("pwv", pwv).id(UUID.randomUUID().toString())
             .issuedAt(now).expiresAt(now.plus(TTL)).build());
     }
 

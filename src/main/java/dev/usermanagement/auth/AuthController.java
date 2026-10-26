@@ -58,7 +58,7 @@ class AuthController {
         boolean ok = !tooLong(req.password())
             && encoder.matches(req.password(), cred == null ? dummyHash : cred.getPasswordHash());
         if (!ok || cred == null || !"ACTIVE".equals(account.status())) throw BAD_CREDENTIALS;
-        return new TokenResponse(jwt.issue(account.id(), roles.currentRoles(account.id())), "Bearer");
+        return new TokenResponse(jwt.issue(account.id(), roles.currentRoles(account.id()), cred.getPasswordUpdatedAtMillis()), "Bearer");
     }
 
     @PostMapping("/logout")

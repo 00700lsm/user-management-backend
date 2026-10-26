@@ -22,10 +22,13 @@ public class AuthCredentialEntity {
     }
 
     String getPasswordHash() { return passwordHash; }
-    OffsetDateTime getPasswordUpdatedAt() { return passwordUpdatedAt; }
+    long getPasswordUpdatedAtMillis() { return passwordUpdatedAt.toInstant().toEpochMilli(); }
 
     void changePassword(String newHash) {
         this.passwordHash = newHash;
-        this.passwordUpdatedAt = OffsetDateTime.now();
+        // millisecond precision (matches the pwv claim) and strictly after the previous value
+        var now = OffsetDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
+        if (passwordUpdatedAt != null && !now.isAfter(passwordUpdatedAt)) now = passwordUpdatedAt.plusNanos(1_000_000);
+        this.passwordUpdatedAt = now;
     }
 }
