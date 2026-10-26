@@ -144,8 +144,30 @@ class AuthApiTests {
     }
 
     JwtClaimsSet claims(long id, String iss, Instant iat, Instant exp) {
-        return JwtClaimsSet.builder().issuer(iss).subject(String.valueOf(id)).claim("roles", List.of("USER"))
-            .id(java.util.UUID.randomUUID().toString()).issuedAt(iat).expiresAt(exp).build();
+        return claims(id, iss, iat, exp, pwv(id));
+    }
+
+    JwtClaimsSet claims(long id, String iss, Instant iat, Instant exp, Object pwv) {
+        var b = JwtClaimsSet.builder().issuer(iss).subject(String.valueOf(id)).claim("roles", List.of("USER"))
+            .id(java.util.UUID.randomUUID().toString()).issuedAt(iat).expiresAt(exp);
+        if (pwv != null) b.claim("pwv", pwv);
+        return b.build();
+    }
+
+    long pwv(long id) {
+        return jdbc.queryForObject("select password_updated_at from auth_credential where user_id = ?",
+            java.time.OffsetDateTime.class, id).toInstant().toEpochMilli();
+    }
+
+    @Test
+    void tokenWithoutOrWithWrongPwvIs401() throws Exception {
+        long id = seed("alice", "ACTIVE", "USER");
+        long pwv = pwv(id);
+        Instant now = Instant.now();
+        protectedGet(jwt.sign(claims(id, "user-management", now, now.plusSeconds(900), pwv))).andExpect(status().isNotFound());
+        protectedGet(jwt.sign(claims(id, "user-management", now, now.plusSeconds(900), null))).andExpect(status().isUnauthorized());
+        protectedGet(jwt.sign(claims(id, "user-management", now, now.plusSeconds(900), pwv + 1))).andExpect(status().isUnauthorized());
+        protectedGet(jwt.sign(claims(id, "user-management", now, now.plusSeconds(900), "abc"))).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -200,9 +222,10 @@ class AuthApiTests {
     void changePasswordInvalidatesOldTokensAndNewPasswordWorks() throws Exception {
         seed("alice", "ACTIVE", "USER");
         String old = token("alice");
-        Thread.sleep(1100); // iat has second precision; the rule is iat < floor(password_updated_at)
+        String other = token("alice"); // second token issued before the change
         change(old, PW, "brand-new-password").andExpect(status().isNoContent());
         protectedGet(old).andExpect(status().isUnauthorized());
+        protectedGet(other).andExpect(status().isUnauthorized());
         login("alice", PW).andExpect(status().isUnauthorized());
         String fresh = login("alice", "brand-new-password").andExpect(status().isOk()).andReturn().getResponse()
             .getContentAsString();

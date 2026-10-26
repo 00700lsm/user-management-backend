@@ -26,7 +26,7 @@ public class CredentialRegistrar {
     }
 
     /** At least 12 characters and at most 72 UTF-8 bytes (BCrypt limit). */
-    static void validatePolicy(String raw) {
+    public static void validatePolicy(String raw) {
         if (raw == null || raw.codePointCount(0, raw.length()) < 12
                 || raw.getBytes(StandardCharsets.UTF_8).length > 72) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "PASSWORD_POLICY_VIOLATION",
